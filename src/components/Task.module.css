@@ -1,0 +1,105 @@
+.task {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    width: 736px;
+    height: 72px;
+
+    background: var(--gray-500);
+
+    border: 1px solid var(--gray-400);
+    border-radius: 8px;
+}
+
+.description {
+    background: transparent;
+    width: 632px;
+    height: 40px;
+
+    text-align: start;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 20px;
+
+    color: var(--gray-100);
+}
+  
+.trashbox {
+    width: 24px;
+    height: 24px;
+
+    background: transparent;
+
+    border: none;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}
+
+.trash {
+    color: var(--gray-300);
+    background: transparent;
+    font-size: 32px;
+    padding: 5px 6px;
+    border-radius: 4px;
+}
+
+.trash:hover {
+    cursor: pointer;
+    color: var(--red-500);
+    background-color: var(--gray-400);
+}
+
+.customCheckbox , .customCheckbox label{
+    background: transparent;
+}
+
+.customCheckbox input {
+    display: none;
+}
+
+.customCheckbox input + label:before {
+    content: '';
+    width: 17.45px;
+    height: 17.45px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--blue-300);
+    display: flex;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.customCheckbox input + label:hover {
+    background-color: var(--blue-500);
+    display: flex;
+    border-radius: 50%; 
+}
+
+.customCheckbox input:checked + label:before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='8' viewBox='0 0 10 7' fill='none'%3E%3Cpath d='M8.43059 0.342123L4.09865 4.67406L1.61618 2.19159L0.780273 3.0275L4.09865 6.34587L9.26649 1.17803L8.43059 0.342123Z' fill='%23F2F2F2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+
+    border: 2px solid var(--purple-500);
+    background-color: var(--purple-500);
+    z-index: -1;
+}
+
+.customCheckbox input:checked + label:hover {
+    background-color: var(--purple-300);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='8' viewBox='0 0 10 7' fill='none'%3E%3Cpath d='M8.43059 0.342123L4.09865 4.67406L1.61618 2.19159L0.780273 3.0275L4.09865 6.34587L9.26649 1.17803L8.43059 0.342123Z' fill='%23F2F2F2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+#checkbox-1:checked ~ .description{
+    color: red;
+}

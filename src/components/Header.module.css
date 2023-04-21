@@ -1,0 +1,32 @@
+.header{
+    background: var(--gray-700);
+
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 3rem;
+
+    height: 12.5rem;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+.header img {
+    background: var(--gray-700);
+    margin: 0 0.75rem;
+
+}
+
+.logo1, .logo2 {
+    background: var(--gray-700);
+    display: flex;
+    align-items: center;
+}
+
+.logo1 {
+    color: var(--blue-300);
+}
+
+.logo2 {
+    color: var(--purple-500);
+}
