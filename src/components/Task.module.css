@@ -29,6 +29,20 @@
 
     color: var(--gray-100);
 }
+
+.taskFinished {
+    background: transparent;
+    width: 632px;
+    height: 40px;
+
+    text-align: start;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 20px;
+
+    text-decoration: line-through;
+    color: var(--gray-300);
+}
   
 .trashbox {
     width: 24px;
@@ -98,8 +112,4 @@
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-}
-
-#checkbox-1:checked ~ .description{
-    color: red;
 }

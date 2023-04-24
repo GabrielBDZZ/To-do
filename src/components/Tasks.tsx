@@ -1,15 +1,17 @@
-import styles from './Tasks.module.css'
 import clipboard from '../../src/assets/Clipboard.svg'
-import { Task } from './Task'
 import plus from '../assets/plus.svg'
-import { Trash } from "@phosphor-icons/react";
+
 import { useState } from 'react'
+
+import { Task } from './Task'
+
+import styles from './Tasks.module.css'
 
 export function Tasks() {
 
     const [tasks, setTasks] = useState<string[]>([])
 
-    function handleCreateNewTask() {
+    function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const newTaskText = event.target.task.value
@@ -30,14 +32,14 @@ export function Tasks() {
 return (
         <>
         <form onSubmit={handleCreateNewTask} className={styles.newTask}>
-            <input name='task' placeholder='Adicione uma nova tarefa'></input>
+            <input name='task' placeholder='Adicione uma nova tarefa' required></input>
             <button type='submit'>Criar <img src={plus}/></button>
         </form>
 
         <div className={styles.component}>
             <div className={styles.head}>
                 <p className={styles.created}>Tarefas criadas <span>{tasks.length}</span></p>
-                <p className={styles.done}>Concluídas <span>0</span></p>
+                <p className={styles.done}>Concluídas <span> {`${tasks.length <= 0 && tasks.length}`}</span></p>
             </div>
 
             <div className={styles.body}>
@@ -50,7 +52,7 @@ return (
                 :
                 <div>
                     {tasks.map( task => {
-                        return <Task key={task} content={task} onDeleteTask={deleteTask} />
+                        return <Task key={task} content={task} onDeleteTask={deleteTask}/>
                     })}
                 </div>
                 }
