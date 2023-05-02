@@ -8,9 +8,11 @@ import styles from './Task.module.css';
 interface TaskProps {
     content: string;
     onDeleteTask: (task: string) => void;
+    checked: boolean;
+    onToggleTask: () => void;
   }
   
-  export function Task({ content, onDeleteTask,}: TaskProps) {
+  export function Task({ content, onDeleteTask, checked, onToggleTask}: TaskProps) {
       
       function handleDeleteTask() {
           onDeleteTask(content)
@@ -19,12 +21,17 @@ interface TaskProps {
         const inputId = uuidv4();
         const labelId = uuidv4();
         
-        const [checkboxIsChecked, setCheckboxIsChecked] = useState(false);
+        const [checkboxIsChecked, setCheckboxIsChecked] = useState(checked);
     
+        function handleToggleTask() {
+            setCheckboxIsChecked(!checkboxIsChecked);
+            onToggleTask();
+          }
+
     return (
         <div className={styles.task}>
             <div className={styles.customCheckbox}>
-            <input type="checkbox" id={inputId} onChange={() => setCheckboxIsChecked(!checkboxIsChecked)}/>
+            <input type="checkbox" id={inputId} onChange={handleToggleTask}/>
                 <label htmlFor={inputId} id={labelId} ></label>
             </div>
             <p className={`${styles.description} ${checkboxIsChecked === true && styles.taskFinished}`}>{content}</p>

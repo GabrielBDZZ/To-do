@@ -8,8 +8,9 @@ import { Task } from './Task'
 import styles from './Tasks.module.css'
 
 export function Tasks() {
-
+    
     const [tasks, setTasks] = useState<string[]>([])
+    const [done, setDone] = useState<number>(0);
 
     function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -28,6 +29,17 @@ export function Tasks() {
 
         setTasks(tasksWithoutDeleted)
     }
+
+    function toggleTask(task: string, isChecked: boolean) {
+        if (isChecked) {
+            setDone(done + 1)
+        }
+    }
+
+    const created = tasks.length
+
+
+      console.log(done)
     
 return (
         <>
@@ -38,8 +50,8 @@ return (
 
         <div className={styles.component}>
             <div className={styles.head}>
-                <p className={styles.created}>Tarefas criadas <span>{tasks.length}</span></p>
-                <p className={styles.done}>Concluídas <span> {`${tasks.length <= 0 && tasks.length}`}</span></p>
+                <p className={styles.created}>Tarefas criadas <span>{created}</span></p>
+                <p className={styles.done}>Concluídas <span> {`${done} de ${created}`}</span></p>
             </div>
 
             <div className={styles.body}>
@@ -52,7 +64,7 @@ return (
                 :
                 <div>
                     {tasks.map( task => {
-                        return <Task key={task} content={task} onDeleteTask={deleteTask}/>
+                        return <Task key={task} content={task} onDeleteTask={deleteTask} onToggleTask={toggleTask} checked={false}/>
                     })}
                 </div>
                 }
