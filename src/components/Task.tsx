@@ -9,13 +9,14 @@ interface TaskProps {
     content: string;
     onDeleteTask: (task: string) => void;
     checked: boolean;
-    onToggleTask: () => void;
+    id: string;
+    onToggleTask: (taskId: string) => void;
   }
   
-  export function Task({ content, onDeleteTask, checked, onToggleTask}: TaskProps) {
+  export function Task({ content, onDeleteTask, checked, id, onToggleTask}: TaskProps) {
       
       function handleDeleteTask() {
-          onDeleteTask(content)
+          onDeleteTask(String(id))
         }
 
         const inputId = uuidv4();
@@ -23,15 +24,15 @@ interface TaskProps {
         
         const [checkboxIsChecked, setCheckboxIsChecked] = useState(checked);
     
-        function handleToggleTask() {
+        const handleToggleTask = () => {
             setCheckboxIsChecked(!checkboxIsChecked);
-            onToggleTask();
-          }
+            onToggleTask(id);
+          };
 
     return (
         <div className={styles.task}>
             <div className={styles.customCheckbox}>
-            <input type="checkbox" id={inputId} onChange={handleToggleTask}/>
+            <input type="checkbox" id={inputId} checked={checkboxIsChecked} onChange={handleToggleTask} />
                 <label htmlFor={inputId} id={labelId} ></label>
             </div>
             <p className={`${styles.description} ${checkboxIsChecked === true && styles.taskFinished}`}>{content}</p>

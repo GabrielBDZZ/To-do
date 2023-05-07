@@ -1,57 +1,95 @@
-import clipboard from '../../src/assets/Clipboard.svg'
-import plus from '../assets/plus.svg'
+import clipboard from '../../src/assets/Clipboard.svg';
+import plus from '../assets/plus.svg';
 
-import { useState } from 'react'
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Task } from './Task'
+import { Task } from './Task';
 
-import styles from './Tasks.module.css'
+import styles from './Tasks.module.css';
+
+interface TaskItem {
+  id: string;
+  title: string;
+  isChecked: boolean;
+}
 
 export function Tasks() {
-    
-    const [tasks, setTasks] = useState<string[]>([])
-    const [done, setDone] = useState<number>(0);
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
 
-    function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+  function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-        const newTaskText = event.target.task.value
+    const newTaskText = event.currentTarget.task.value;
 
-        setTasks([...tasks, newTaskText])
+    const newTask = { id: uuidv4(), title: newTaskText, isChecked: false };
 
-        event.target.task.value = ''
+    setTasks([...tasks, newTask]);
+
+    event.currentTarget.task.value = '';
+  }
+
+  function deleteTask(taskId: string) {
+    const taskToDelete = tasks.find((task) => task.id === taskId);
+    const tasksWithoutDeleted = tasks.filter((task) => task.id !== taskId);
+  
+    setTasks(tasksWithoutDeleted);
+  
+    if (taskToDelete?.isChecked) {
+      setCompletedTasks((prevCompletedTasks) =>
+        prevCompletedTasks.filter((taskId) => taskId !== taskToDelete.id)
+      );
     }
+  }
+  
 
-    function deleteTask(taskToDelete: string) { 
-        const tasksWithoutDeleted = tasks.filter (task => {
-            return task !== taskToDelete
-        })
+  function handleToggleTask(taskId: string) {
+    const taskIndex = tasks.findIndex((task) => task.id === taskId);
+    const task = tasks[taskIndex];
 
-        setTasks(tasksWithoutDeleted)
+    const updatedTask = { ...task, isChecked: !task.isChecked };
+
+    setTasks([
+      ...tasks.slice(0, taskIndex),
+      updatedTask,
+      ...tasks.slice(taskIndex + 1),
+    ]);
+
+    if (updatedTask.isChecked) {
+      setCompletedTasks([...completedTasks, updatedTask.id]);
+    } else {
+      const completedTaskIndex = completedTasks.findIndex(
+        (completedTask) => completedTask === updatedTask.id
+      );
+
+      setCompletedTasks([
+        ...completedTasks.slice(0, completedTaskIndex),
+        ...completedTasks.slice(completedTaskIndex + 1),
+      ]);
     }
+  }
 
-    function toggleTask(task: string, isChecked: boolean) {
-        if (isChecked) {
-            setDone(done + 1)
-        }
-    }
+  const created = tasks.length;
+  const done = completedTasks.length;
 
-    const created = tasks.length
+  return (
+    <>
+      <form onSubmit={handleCreateNewTask} className={styles.newTask}>
+        <input name="task" placeholder="Adicione uma nova tarefa" required />
+        <button type="submit">
+          Criar <img src={plus} />
+        </button>
+      </form>
 
-
-      console.log(done)
-    
-return (
-        <>
-        <form onSubmit={handleCreateNewTask} className={styles.newTask}>
-            <input name='task' placeholder='Adicione uma nova tarefa' required></input>
-            <button type='submit'>Criar <img src={plus}/></button>
-        </form>
-
-        <div className={styles.component}>
-            <div className={styles.head}>
-                <p className={styles.created}>Tarefas criadas <span>{created}</span></p>
-                <p className={styles.done}>Concluídas <span> {`${done} de ${created}`}</span></p>
+      <div className={styles.component}>
+        <div className={styles.head}>
+          <p className={styles.created}>
+            Tarefas criadas <span>{created}</span>
+          </p>
+          <p className={styles.done}>
+            Concluídas <span> {`${done} de ${created}`}</span>
+            </p>
             </div>
 
             <div className={styles.body}>
@@ -64,7 +102,14 @@ return (
                 :
                 <div>
                     {tasks.map( task => {
-                        return <Task key={task} content={task} onDeleteTask={deleteTask} onToggleTask={toggleTask} checked={false}/>
+                        return <Task 
+                        key={task.id}
+                        id={task.id}
+                        content={task.title}
+                        onDeleteTask={deleteTask}
+                        checked={task.isChecked}
+                        onToggleTask={handleToggleTask}
+                        />
                     })}
                 </div>
                 }
